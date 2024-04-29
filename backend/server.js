@@ -16,7 +16,8 @@ app.get("/api/chats", (req, res) => {
 
 app.get("/api/chats/:id", (req, res) => {
   const singleChat = chats.find((c) => c._id === req.params.id);
-  //   console.log(singleChat);
+  // console.log("SC");
+  console.log(singleChat);
   res.send(singleChat);
 });
 
