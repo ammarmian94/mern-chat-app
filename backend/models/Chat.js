@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const chatSchema = mongoose.Schema(
   {
@@ -24,6 +24,10 @@ const chatSchema = mongoose.Schema(
   }
 );
 
+const virtual = chatSchema.virtual("id");
+virtual.get(function () {
+  return this._id;
+});
 const Chat = mongoose.model("Chat", chatSchema);
 
-module.exports = Chat;
+export default Chat;
