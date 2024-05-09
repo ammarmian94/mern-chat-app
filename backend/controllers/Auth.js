@@ -19,12 +19,12 @@ export const registerUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (user && (await user.matchPassword(password))) {
-      console.log(user);
+      // console.log(user);
       res.status(201).json({
         _id: user._id,
         name: user.name,

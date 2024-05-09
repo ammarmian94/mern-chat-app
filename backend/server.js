@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoutes from "./routes/Auth.js";
 import userRoutes from "./routes/User.js";
+import chatRoutes from "./routes/Chat.js";
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 
 const app = express();
@@ -20,6 +21,7 @@ async function connectDb() {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
