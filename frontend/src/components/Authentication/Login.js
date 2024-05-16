@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom';
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -17,6 +18,7 @@ const Login = () => {
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate()
 
   const handleShow = () => setShow(!show);
   const handleSubmit = async () => {
@@ -43,14 +45,14 @@ const Login = () => {
       );
       toast({
         title: "Login Successfull",
-        status: "sucess",
+        status: "success",
         duration: 9000,
         isClosable: true,
         position: "bottom",
       });
-      console.log("data " + data);
+      console.log(data);
       localStorage.setItem("userInfo", JSON.stringify(data));
-      // history.push("/chat");
+      navigate("/chats");
       return;
     } catch (error) {
       toast({

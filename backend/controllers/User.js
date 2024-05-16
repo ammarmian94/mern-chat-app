@@ -12,6 +12,7 @@ export const getAllUsers = async (req, res) => {
       : {};
     const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
     if (!users) res.status(401).json("No user found");
+    // console.log(users);
     res.status(200).json(users);
   } catch (error) {
     res.status(401).json(error);

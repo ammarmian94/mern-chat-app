@@ -1,6 +1,7 @@
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 
+// create or access chat with selected user
 export const accessChats = async (req, res) => {
   const { userId } = req.body;
 
@@ -27,7 +28,7 @@ export const accessChats = async (req, res) => {
 
   // console.log("before if");
   if (isChat.length > 0) {
-    console.log("Chat Found");
+    // console.log("Chat Found");
     res.send(isChat[0]);
   } else {
     var chatData = {
@@ -43,7 +44,7 @@ export const accessChats = async (req, res) => {
         "-password"
       );
 
-      console.log("New Chat Created");
+      // console.log("New Chat Created");
       res.status(200).json(FullChat);
     } catch (error) {
       res.status(404).json(error.message);
@@ -51,8 +52,10 @@ export const accessChats = async (req, res) => {
   }
 };
 
+// fetch chat of single user
 export const fetchChats = async (req, res) => {
-  // console.log("Fetch Chats");
+  console.log("Fetch Chats");
+  // console.log(req.body);
   try {
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
@@ -64,6 +67,7 @@ export const fetchChats = async (req, res) => {
           path: "latestMessage.sender",
           select: "name image email",
         });
+        console.log(results);
         res.status(200).json(results);
       });
   } catch (error) {
@@ -71,6 +75,7 @@ export const fetchChats = async (req, res) => {
   }
 };
 
+// create group chat with atleast 2 members and logged in user as admin
 export const createGroupChat = async (req, res) => {
   if (!req.body.name || !req.body.users) {
     return res.status(400).json("Please fill all fields");
