@@ -1,27 +1,31 @@
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, Button, Stack, useToast } from "@chakra-ui/react";
+import { Box, Button, Stack, useToast, Text } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ChatLoading from "../components/ChatLoading";
-import getSender from "../components/Config/ChatLogics";
-const MyChats = () => {
+import { getSender } from "../components/Config/ChatLogics";
+import { ChatState } from "../Context/ChatProvider";
+import GroupChatModal from "./GroupChatModal";
+const MyChats = ({fetchAgain}) => {
   const toast = useToast();
   const [loggedUser, setLoggedUser] = useState();
-  const { user, chats, setchats, selectedChat, setSelectedChat } = useState();
+  const { user, chats, setChats, selectedChat, setSelectedChat } = ChatState();
 
   // fetch chat of specific user
   const fetchChats = async () => {
+    console.log(chats);
     try {
       const config = {
-        Headers: {
+        headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
       console.log("fetch chats");
-      const { data } = axios.get("/api/chat", config);
+      const { data } = await axios.get("/api/chat", config);
       console.log(data);
-      setchats(data);
+      setChats(data);
     } catch (error) {
+      console.log("Error");
       toast({
         title: "Error Occured!",
         description: "Failed to load chats",
@@ -35,12 +39,13 @@ const MyChats = () => {
 
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+    console.log("MYChats useEffect");
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
-      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDirection="column"
       alignItems="center"
       p={3}
@@ -60,13 +65,15 @@ const MyChats = () => {
         alignItems="center"
       >
         My Chats
-        <Button
-          display="flex"
-          fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-          rightIcon={<AddIcon />}
-        >
-          New Group Chat
-        </Button>
+        <GroupChatModal>
+          <Button
+            display="flex"
+            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+            rightIcon={<AddIcon />}
+          >
+            New Group Chat
+          </Button>
+        </GroupChatModal>
       </Box>
       <Box
         display="flex"
@@ -74,7 +81,7 @@ const MyChats = () => {
         p={3}
         bg="#F8F8F8"
         w="100%"
-        h="100%"
+        h="85%"
         borderRadius="lg"
         overflowY="hidden"
       >

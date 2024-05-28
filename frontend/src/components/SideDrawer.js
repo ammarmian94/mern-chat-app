@@ -83,7 +83,8 @@ const SideDrawer = () => {
   // create or access chats with selected user
   const accessChat = async (userId) => {
     try {
-      // console.log(user.token);
+      console.log(user.token);
+      console.log("access chats");
       setLoading(true);
       const config = {
         headers: {
@@ -92,9 +93,9 @@ const SideDrawer = () => {
         },
       };
       const { data } = await axios.post("/api/chat", { userId }, config);
-      // console.log(data);
       console.log("access chats");
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+      console.log(data);
 
       setSelectedChat(data);
       setLoading(false);

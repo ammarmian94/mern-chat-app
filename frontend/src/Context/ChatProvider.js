@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Login from "../components/Authentication/Login";
+import { useParams } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 const ChatContext = createContext();
@@ -11,6 +12,8 @@ const ChatProvider = ({ children }) => {
 
   // const navigate = useNavigate();
   // let userInfo;
+  // const params = useParams();
+  const currentUser = localStorage.getItem("userInfo");
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
@@ -19,7 +22,7 @@ const ChatProvider = ({ children }) => {
     //   // navigate("/");
     //   // return <Login/>
     // }
-  }, []);
+  }, [currentUser]);
 
   return (
     <ChatContext.Provider
